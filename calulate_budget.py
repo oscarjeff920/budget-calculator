@@ -34,215 +34,207 @@ print(f"REMAINDER = £{remainder})
 for value in summary:
 	print(f"value: £{summary[value]}")
 """
-import typing
-
+import json
 import datetime as dt
 
 
-def counting_loop(question_string: str, obj_name: str, obj: typing.Dict, date_today: int = 0):
-    question: str = input(question_string).lower()
+def collect_items(question_string, item_type, has_payment_dates=False):
+    summary = {}
+    item_number = 0
+    total = 0
 
-    _ = 0
-    while question != 'n' and question != 'no':
-        _ += 1
+    # Asking the question from the question string to discover if any of these items exist; if not skip the loop.
+    question = input(question_string)
+    if question == 'yes' or question == 'y' or question == '':
+        while True:
+            item_number += 1
 
-        name: str = input(f'\nName of {obj_name} {_}: ')
-        if name == "":
-            final_question: str = input(f"Is that all of your {obj_name}? y/n\n").lower()
-            if final_question != 'n' and final_question != 'no':
-                break
+            # Asking the name of the source, if empty string is entered, its assumed that there are no more sources
+            name: str = input(f'\nName of {item_type} {item_number}: ')
+            if name == "__list__":
+                print([name for name in summary])
+            elif name == "":
+                # Double checking that there are no more sources
+                final_question: str = input(f"Is that all of your {item_type}? y/n\n").lower()
+                if final_question != 'n' and final_question != 'no':
+                    break
+                else:
+                    # if there actually are more sources (n/no) then the item number needs to be reset
+                    item_number -= 1
+                    continue
+
+            cost: float = float(input(f"How much £ from {name}?\n£"))
+            total += cost
+            if has_payment_dates:
+                date: int = int(input("Date of payment: ").lower()
+                                .replace('st', '').replace('nd', '').replace('rd', '').replace('th', ''))
+                source_details = {"cost": cost, "date": date}
             else:
-                _ -= 1
-                continue
-        value: float = float(input(f"How much £ from {name}?\n£"))
-        if date_today:
-            date: int = int(input("Date of payment: ").lower()
-                            .replace('st', '').replace('nd', '').replace('rd', '').replace('th', ''))
-            # As my bank is dynamic and automatically takes payments out
-            # I need to account for that by only adding payments yet to be taken out of my account
-            if date_today < int(date):
-                obj['not paid'][name] = dict(value=value, date=date)
-                obj['not paid']['total'] += value
+                source_details = {"cost": cost}
 
-        obj['total'] += value
-        obj[name] = dict(value=value, date=date)
+            summary[name] = source_details
 
-    # Might be better to have separate payments and not_paid dictionaries so that they can be easily ordered
-    # after they're sorted by date, the totals for each are added as a key and
-    # they're put together in a single dict after
-    # {'payments': {}, 'not paid': {}}
-    if date_today:
-        type(obj)
-        obj = sorted(obj.items(), key=lambda x: x[1]['date'])
+        if has_payment_dates:
+            summary = sort_payment_dates(summary)
 
-    return obj
+        summary.update({"net": total})
+
+    print(f"{item_type} summary: {summary}")
+    return summary
+
+
+def sort_payment_dates(payments):
+    return dict(sorted(payments.items(), key=lambda x: x[1]['date']))
+
+def copy_over_items(summary1, summary2, item_type):
+    summary2[item_type] = summary1[item_type].copy()
+    return summary2
+
+
+def save_budget(**kwargs):
+    today = str(dt.datetime.now())
+    date = today[:today.find(" ")]
+
+    filename = f"Budget:{date}"
+
+    # for budget_name, budget in kwargs.items():
+    with open(f"{filename}.json", "w") as budget_file:
+        json.dump(kwargs, budget_file)
 
 
 def calculate_budget(testing: bool):
-    date_today: int = int(str(dt.datetime.now().date()).split('-')[-1])
+    # date_today: int = int(str(dt.datetime.now().date()).split('-')[-1])
+    # summary_from_today = {'total': 0, 'date_today': date_today}
     if testing:
-        overdraft = 55
+        salary = 1842.82
+    else:
+        salary = float(input("How much were you paid this month?\n£"))
+
+    month_tally = {'salary': salary}
+
+    # =========================
+    # Extra Sources of Money
+    if testing:
+        extra_sources = { "manu's phone": { "cost": 58.0 }, "manu's flight": { "cost": 15.0 }, "net": 73.0 }
+    else:
+        extra_sources = collect_items(
+            'Do you have any extra sources of money?\ne.g. savings/payments. y/n\n',
+            'extra sources of money'
+        )
+    month_tally['extra sources'] = extra_sources
+
+    # ==========================
+    # Overdraft
+    if testing:
+        overdraft = 0
     else:
         overdraft: float = float(input("How much overdraft is currently taken out?\n£"))
 
-    # if testing:
-    #     extra_sources =
-    # try:
-    #     extra_sources: typing.Dict = counting_loop(
-    #         question_string='Do you have any extra sources of money?\ne.g. savings/payments. y/n\n',
-    #         obj_name='extra sources',
-    #         obj={'total': 0}
-    #     )
-    # except ValueError:
-    #     print("\nWhoops that didn't go right, try again\n")
-    #     extra_sources: typing.Dict = counting_loop(
-    #         question_string='Do you have any extra sources of money?\ne.g. savings/payments. y/n\n',
-    #         obj_name='extra sources',
-    #         obj={'total': 0}
-    #     )
+    month_tally['overdraft'] = overdraft
 
-    extra_sources = {'total': 88.0, 'll': 33.0, 'js': 55.0}
-    print(f"\n{len(extra_sources) - 1} extra sources of money.\nTotal extra_money = £{extra_sources['total']}")
-
-    print("BUDGET")
-
-    try:
-        outgoings: typing.Dict = counting_loop(
-            question_string='List your Monzo tracked outgoings:',
-            obj_name='outgoings',
-            obj={'total': 0, 'not paid': {'total': 0},
-                 '(left to pay)': float(input("'Left to pay' in monzo budget pot:\n£"))},
-            date_today=date_today
-        )
-    except ValueError:
-        print("\nWhoops that didn't go right, try again\n")
-        outgoings: typing.Dict = counting_loop(
-            question_string='List your Monzo tracked outgoings:',
-            obj_name='outgoings',
-            obj={'total': 0, 'not paid': {'total': 0},
-                 '(left to pay)': float(input("'Left to pay' in monzo budget pot:\n£"))},
-            date_today=date_today
+    # ==========================
+    # Budget
+    budget = {'total': 0}
+    if testing:
+        flex = {
+            "manu's ireland flight": { "cost": 15.0 },
+            "manu's new phone": { "cost": 58.0 },
+            "new shoes": {  "cost": 22.0 },
+            "elisa's blood test": { "cost": 39.0 },
+            "new phone": { "cost": 77.0 },
+            "net": 211.0
+        }
+    else:
+        flex = collect_items(
+            "Do you have any payments split with Monzo Flex?\ny/n\n",
+            "flex payment",
         )
 
-    print(f"outgoings: {outgoings}")
+    budget['flex'] = flex
+    budget['total'] += flex['net']
 
-    try:
-        extra_outgoings: typing.Dict = counting_loop(
-            question_string="\n\nAre there any outgoings not accounted for, "
-                            "e.g. standing orders or payments monzo isn't aware of? y/n\n",
-            obj_name='extra outgoings',
-            obj={'total': 0, 'not paid': {'total': 0}},
-            date_today=date_today
+    if testing:
+        yet_to_pay = 1100
+        direct_debits = {
+            "boulder brighton": { "cost": 46.0, "date": 1 },
+            "elisa swimming": { "cost": 29.68, "date": 3 },
+            "the gym": { "cost": 24.99, "date": 7 },
+            "EE": { "cost": 13.5, "date": 25  },
+            "mum": { "cost": 700.0, "date": 29 },
+            "spotify": { "cost": 16.99, "date": 29 },
+            "net": 831.16
+        }
+    else:
+        yet_to_pay = float(input("How much is to pay in 'left to pay' in monzo?\n£"))
+        # Direct Debits
+        direct_debits = collect_items(
+            "Do you have any direct-debits or standing orders paid directly from your account?\ny/n\n",
+            "direct debits",
+            True
         )
-    except ValueError:
-        print("\nWhoops that didn't go right, try again\n")
-        extra_outgoings: typing.Dict = counting_loop(
-            question_string="\n\nAre there any outgoings not accounted for, "
-                            "e.g. standing orders or payments monzo isn't aware of? y/n\n",
-            obj_name='extra outgoings',
-            obj={'total': 0, 'not paid': {'total': 0}},
-            date_today=date_today
-        )
+    # Separate direct debits with 'elisa' in the name
+    allowance = round(yet_to_pay - direct_debits['net'], 2)
+    budget['yet to pay'] = {'net': yet_to_pay, 'direct debits': direct_debits, 'allowance': allowance}
+    budget['total'] += yet_to_pay
 
-    print(f"extra_outgoings: {extra_outgoings}")
+    # Direct Debits Separate to Monzo
+    if testing:
+        separate_payments = {
+            "elisa's nursery": { "cost": 382.5, "date": 2 },
+            "net": 382.5
+        }
+    else:
+        separate_payments = collect_items(
+                "Do you have any direct-debits or standing orders that monzo cant auto pay for you?\ny/n\n",
+                "separate payments",
+                True
+            )
 
-    budget = {
-        'total': 0,
-        'not paid': {'total': outgoings['not paid']['total'], 'outgoings': outgoings['not paid']},
-        'allowance': outgoings['(left to pay)'] - outgoings['not paid']['total'],
-        'outgoings': outgoings,
-        'extra outgoings': extra_outgoings}
+    budget['separate payments'] = separate_payments
+    budget['total'] += separate_payments['net']
 
-    # for val in budget.keys():
-    #     print(val)
 
-    # print("\n\nBUDGET")
-    # budget = {'total': 0, 'sum_total': 0}
-    #
-    #
-    # print('Monzo tracked outgoings:')
-    # l = 0
-    # while True:
-    #     l += 1
-    #     name_ = input(f"\nName of outgoing {l}: ")
-    #     if name_ == "":
-    #         outgoings_question = input("\nIs that all of your outgoings? y/n\n").lower()
-    #         if outgoings_question != 'n' and outgoings_question != 'no':
-    #             break
-    #         else:
-    #             l -= 1
-    #             continue
-    #
-    #     value = float(input("Cost: £"))
-    #     date = input("Date of payment: ")
-    #
-    #     # As my bank is dynamic and automatically takes payments out I need to account for that by only adding payments
-    #     # yet to be taken out of my account
-    #     if date_today < int(date):
-    #         outgoings['sum_total'] += value
-    #     outgoings['total'] += value
-    #     outgoings[name_] = {'value': value, 'date': date}
-    #
-    # outgoings = sorted(outgoings.items(), key=lambda x: x[1]['date'])
-    #
-    # extra_outgoings = {'total': 0, 'sum_total': 0}
-    # extra_outgoings_question = input(
-    #     "\n\nAre there any outgoings not accounted for, e.g. standing orders or payments monzo isn't aware of? y/n\n"
-    # ).lower()
-    # while extra_outgoings_question != 'n' or extra_outgoings_question != 'no':
-    #     name = input('Name of extra outgoing: ')
-    #
-    #     if name == "":
-    #         final_extra_outgoings_question = input('\nIs that all of your outgoings? y/n\n').lower()
-    #         if final_extra_outgoings_question != 'n' and final_extra_outgoings_question != 'no':
-    #             break
-    #         else:
-    #             l -= 1
-    #             continue
-    #
-    #     value = float(input(f"Cost\n£"))
-    #     date = input("Date of payment: ")
-    #
-    #     # As my bank is dynamic and automatically takes payments out I need to account for that by only adding payments
-    #     # yet to be taken out of my account
-    #     if date_today < int(date):
-    #         extra_outgoings['sum_total'] += value
-    #     extra_outgoings['total'] += value
-    #     extra_outgoings[name] = value
-    # extra_outgoings = sorted(extra_outgoings.items(), key=lambda x: x[1]['date'])
-    #
-    # outgoings['extra_outgoings'] = extra_outgoings
-    # outgoings['total'] += extra_outgoings['total']
-    #
-    # budget['total'] += outgoings['total']
-    # budget['outgoings'] = outgoings
-    #
-    # budget['allowance'] = outgoings['(left_to_pay)'] - outgoings['total']
-    # budget['total'] += budget['allowance']
-    #
-    # print(f"\nOverdraft: ${overdraft}\nExtra Sources: ${extra_sources}\nBudget: ${budget}")
-    # print("FLEX:")
-    # flex = {'total': 0}
-    # flex_question = input('Do you have any flex payments to make?\n')
-    # _ = 0
-    # while flex_question != 'n' and flex_question != 'no':
-    #     i = 0
-    #     sources_question = input("Do you have any extra sources of money?\ne.g. savings/payments. y/n\n").lower()
-    #     while sources_question != 'n' and sources_question != 'no':
-    #         i += 1
-    #
-    #         name_ = input(f"\nName of source {i}: ")
-    #         if name_ == "":
-    #             final_sources_question = input("Is that all of your outgoings? y/n\n").lower()
-    #             if final_sources_question != 'n' or final_sources_question != 'no':
-    #                 break
+    month_tally['budget'] = budget
+    # print("")
+    # for item, value in month_tally.items():
+    #     if type(value) != dict:
+    #         print(f"{item}: {value}")
+    #     else:
+    #         print(f"{item}:")
+    #         for item1, value1 in value.items():
+    #             if type(value1) != dict:
+    #                 print(f"    - {item1}: {value1}")
     #             else:
-    #                 i -= 1
-    #                 continue
-    #         value = float(input(f"How much £ from {name_}?\n£"))
-    #
-    #         extra_sources['total'] += value
-    #         extra_sources[name_] = value
+    #                 print(f"    - {item1}:")
+    #                 for item2, value2 in value1.items():
+    #                     if type(value2) != dict:
+    #                         print(f"        - {item2}: {value2}")
+    #                     else:
+    #                         print(f"        - {item2}:")
+    #                         for item3, value3 in value2.items():
+    #                             print(f"            - {item3}: {value3}")
+
+    summary_totals = {
+        "salary": month_tally['salary'],
+        "extra sources": month_tally['extra sources']['net'],
+        "NET IN": month_tally['salary'] + month_tally['extra sources']['net'],
+        "overdraft": month_tally['overdraft'],
+        "direct debits": month_tally['budget']['yet to pay']['direct debits']['net'],
+        "allowance": month_tally['budget']['yet to pay']['allowance'],
+        "separate payments": month_tally['budget']['separate payments']['net'],
+        "flex": month_tally['budget']['flex']['net'],
+        "NET OUT": overdraft + yet_to_pay + separate_payments['net'] + flex['net']
+    }
+
+    summary_totals['remainder'] = round(
+        summary_totals['salary'] + summary_totals['extra sources'] - (
+        summary_totals['overdraft'] + summary_totals['direct debits'] + summary_totals['separate payments'] +
+        summary_totals['allowance'] + summary_totals['flex']),
+        2
+    )
+
+    save_budget(month_tally = month_tally, summary_totals = summary_totals)
+    print("END")
 
 
 if __name__ == "__main__":
