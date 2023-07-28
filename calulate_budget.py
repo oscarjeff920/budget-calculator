@@ -106,7 +106,7 @@ def calculate_budget(testing: bool):
     # date_today: int = int(str(dt.datetime.now().date()).split('-')[-1])
     # summary_from_today = {'total': 0, 'date_today': date_today}
     if testing:
-        salary = 1842.82
+        salary = 1841.22
     else:
         salary = float(input("How much were you paid this month?\n£"))
 
@@ -115,7 +115,11 @@ def calculate_budget(testing: bool):
     # =========================
     # Extra Sources of Money
     if testing:
-        extra_sources = { "manu's phone": { "cost": 58.0 }, "manu's flight": { "cost": 15.0 }, "net": 73.0 }
+        extra_sources = {
+            "for manu's phone": {'cost': 58.0},
+            "for manu's tickets to dublin": {'cost': 15.0},
+            'left from last month': {'cost': 1.17}, 'net': 74.17
+        }
     else:
         extra_sources = collect_items(
             'Do you have any extra sources of money?\ne.g. savings/payments. y/n\n',
@@ -133,55 +137,61 @@ def calculate_budget(testing: bool):
     month_tally['overdraft'] = overdraft
 
     # ==========================
-    # Budget
-    budget = {'total': 0}
+    # Budget (includes left to pay + extra payments)
+    """
+    yet_to_pay includes all direct debits taken out of the budget pot, including:
+    - daily allowance
+    - direct debits
+    - flex payments
+    """
+    if testing:
+        left_to_pay_value = 1294.07
+    else:
+        left_to_pay_value = float(input("How much is to pay in 'left to pay' in monzo?\n£"))
+    budget = {"total": left_to_pay_value, "left to pay": {"net": left_to_pay_value}}
+
     if testing:
         flex = {
-            "manu's ireland flight": { "cost": 15.0 },
-            "manu's new phone": { "cost": 58.0 },
-            "new shoes": {  "cost": 22.0 },
-            "elisa's blood test": { "cost": 39.0 },
-            "new phone": { "cost": 77.0 },
-            "net": 211.0
+            "manu's phone": {'cost': 58.0},
+            "manu's tickets to dublin": {'cost': 15.0},
+            'suit shoes': {'cost': 22.0},
+            "elisa's horrible blood test": {'cost': 39.0},
+            'my replacement phone ': {'cost': 77.0},
+            'net': 211.0
         }
     else:
         flex = collect_items(
             "Do you have any payments split with Monzo Flex?\ny/n\n",
             "flex payment",
         )
+    budget['left to pay']['flex'] = flex
 
-    budget['flex'] = flex
-    budget['total'] += flex['net']
-
+    # Direct Debits
     if testing:
-        yet_to_pay = 1100
         direct_debits = {
-            "boulder brighton": { "cost": 46.0, "date": 1 },
-            "elisa swimming": { "cost": 29.68, "date": 3 },
-            "the gym": { "cost": 24.99, "date": 7 },
-            "EE": { "cost": 13.5, "date": 25  },
-            "mum": { "cost": 700.0, "date": 29 },
-            "spotify": { "cost": 16.99, "date": 29 },
-            "net": 831.16
+            'the gym': {'cost': 24.99, 'date': 7},
+            'mum rent': {'cost': 700.0, 'date': 29},
+            'net': 724.99
         }
     else:
-        yet_to_pay = float(input("How much is to pay in 'left to pay' in monzo?\n£"))
-        # Direct Debits
         direct_debits = collect_items(
             "Do you have any direct-debits or standing orders paid directly from your account?\ny/n\n",
             "direct debits",
             True
         )
-    # Separate direct debits with 'elisa' in the name
-    allowance = round(yet_to_pay - direct_debits['net'], 2)
-    budget['yet to pay'] = {'net': yet_to_pay, 'direct debits': direct_debits, 'allowance': allowance}
-    budget['total'] += yet_to_pay
+
+    budget['left to pay']['direct debits'] = direct_debits
+    allowance = round(left_to_pay_value - (flex['net'] + direct_debits['net']), 2)
+    budget['left to pay']['allowance'] = allowance
 
     # Direct Debits Separate to Monzo
     if testing:
         separate_payments = {
-            "elisa's nursery": { "cost": 382.5, "date": 2 },
-            "net": 382.5
+            'boulder brighton': {'cost': 46.0, 'date': 1},
+            "elisa's nursery": {'cost': 286.88, 'date': 3},
+            'EE': {'cost': 13.5, 'date': 21},
+            'spotify': {'cost': 16.99, 'date': 29},
+            'net': 363.37
         }
     else:
         separate_payments = collect_items(
@@ -195,43 +205,34 @@ def calculate_budget(testing: bool):
 
 
     month_tally['budget'] = budget
-    # print("")
-    # for item, value in month_tally.items():
-    #     if type(value) != dict:
-    #         print(f"{item}: {value}")
-    #     else:
-    #         print(f"{item}:")
-    #         for item1, value1 in value.items():
-    #             if type(value1) != dict:
-    #                 print(f"    - {item1}: {value1}")
-    #             else:
-    #                 print(f"    - {item1}:")
-    #                 for item2, value2 in value1.items():
-    #                     if type(value2) != dict:
-    #                         print(f"        - {item2}: {value2}")
-    #                     else:
-    #                         print(f"        - {item2}:")
-    #                         for item3, value3 in value2.items():
-    #                             print(f"            - {item3}: {value3}")
 
+    # Separate costs with 'elisa' in the name
     summary_totals = {
         "salary": month_tally['salary'],
         "extra sources": month_tally['extra sources']['net'],
         "NET IN": month_tally['salary'] + month_tally['extra sources']['net'],
         "overdraft": month_tally['overdraft'],
-        "direct debits": month_tally['budget']['yet to pay']['direct debits']['net'],
-        "allowance": month_tally['budget']['yet to pay']['allowance'],
+        "into budget": round(month_tally['budget']['total'], 2),
+        "left to pay": left_to_pay_value,
+        "flex": month_tally['budget']['left to pay']['flex']['net'],
+        "direct debits": month_tally['budget']['left to pay']['direct debits']['net'],
+        "allowance": month_tally['budget']['left to pay']['allowance'],
         "separate payments": month_tally['budget']['separate payments']['net'],
-        "flex": month_tally['budget']['flex']['net'],
-        "NET OUT": overdraft + yet_to_pay + separate_payments['net'] + flex['net']
+        "NET OUT": overdraft + left_to_pay_value + separate_payments['net']
     }
 
-    summary_totals['remainder'] = round(
-        summary_totals['salary'] + summary_totals['extra sources'] - (
-        summary_totals['overdraft'] + summary_totals['direct debits'] + summary_totals['separate payments'] +
-        summary_totals['allowance'] + summary_totals['flex']),
+    remainder = round(
+        summary_totals['NET IN'] - summary_totals['NET OUT'],
         2
     )
+
+    print(f"After all your outgoings, there is £{remainder} left\n"
+          f"Between Extra Expenses and Savings how would you like to split it?")
+    summary_totals['extra_expenses'] = float(input("Extra Expenses:\n£"))
+    summary_totals['savings'] = remainder - summary_totals['extra_expenses']
+    print(f"Leaving Savings:\n£{summary_totals['savings']}")
+    summary_totals['========'] = '==========='
+    summary_totals['available'] = allowance + summary_totals['extra_expenses']
 
     save_budget(month_tally = month_tally, summary_totals = summary_totals)
     print("END")
