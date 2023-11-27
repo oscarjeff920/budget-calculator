@@ -1,0 +1,203 @@
+{
+  "shared": {
+    "total": {
+      "oscar": 901.1600000000001,
+      "manu": 465.01,
+      "together": 1366.17
+    },
+    "flex": {
+      "total": {
+        "payments": [
+          "shared flights to brazil",
+          "h&m elisa"
+        ],
+        "oscar": 117.85000000000001,
+        "manu": 60.82,
+        "together": 178.67000000000002
+      },
+      "shared flights to brazil": {
+        "oscar": 102.68,
+        "manu": 52.99,
+        "percent": "5.58%",
+        "together": 155.67
+      },
+      "h&m elisa": {
+        "oscar": 15.17,
+        "manu": 7.83,
+        "percent": "0.82%",
+        "together": 23
+      }
+    },
+    "direct debits": {
+      "total": {
+        "payments": [
+          "mum rent"
+        ],
+        "oscar": 461.74,
+        "manu": 238.26,
+        "together": 700.0
+      },
+      "mum rent": {
+        "oscar": 461.74,
+        "manu": 238.26,
+        "percent": "25.08%",
+        "together": 700
+      }
+    },
+    "separate debits": {
+      "total": {
+        "payments": [
+          "elisa nursery"
+        ],
+        "oscar": 321.57,
+        "manu": 165.93,
+        "together": 487.5
+      },
+      "elisa nursery": {
+        "oscar": 321.57,
+        "manu": 165.93,
+        "percent": "17.47%",
+        "together": 487.5
+      }
+    }
+  },
+  "break_down": {
+    "oscar salary": 1841.02,
+    "manu salary": 950,
+    "combined salary": 2791.02,
+    "extra sources": {
+      "for manu's phone": {
+        "cost": 56.71
+      },
+      "for manu's tickets to dublin": {
+        "cost": 15.0
+      },
+      "sandra flights to brazil": {
+        "cost": 163.33
+      },
+      "total": 235.04
+    },
+    "overdraft": 0,
+    "NET IN": 2541.0699999999997,
+    "NET OUT": 2145.59,
+    "NET OUT SHARED": 1366.17,
+    "budget": {
+      "left to pay": 1658.09,
+      "allowance": 355.0,
+      "flex": {
+        "christmas present": {
+          "cost": 66.92
+        },
+        "manu's phone": {
+          "cost": 56.71
+        },
+        "sandra flights to brazil": {
+          "cost": 163.33
+        },
+        "shared flights to brazil": {
+          "cost": 155.67,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 102.68,
+            "manu": 52.99,
+            "percent": "5.58%",
+            "together": 155.67
+          }
+        },
+        "h&m me": {
+          "cost": 28
+        },
+        "h&m elisa": {
+          "cost": 23,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 15.17,
+            "manu": 7.83,
+            "percent": "0.82%",
+            "together": 23
+          }
+        },
+        "protein": {
+          "cost": 22.89
+        },
+        "starfish and coffee": {
+          "cost": 18
+        },
+        "manu flights to dublin": {
+          "cost": 15
+        },
+        "total": 549.52
+      },
+      "direct debits": {
+        "ee": {
+          "cost": 9.0,
+          "date": 2
+        },
+        "google storage": {
+          "cost": 1.59,
+          "date": 5
+        },
+        "the gym": {
+          "cost": 24.99,
+          "date": 7
+        },
+        "mum rent": {
+          "cost": 700,
+          "date": 29,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 461.74,
+            "manu": 238.26,
+            "percent": "25.08%",
+            "together": 700
+          }
+        },
+        "spotify": {
+          "cost": 17.99,
+          "date": 29
+        },
+        "total": 753.57
+      },
+      "separate payments": {
+        "elisa nursery": {
+          "cost": 487.5,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 321.57,
+            "manu": 165.93,
+            "percent": "17.47%",
+            "together": 487.5
+          }
+        },
+        "total": 487.5
+      },
+      "total": 2145.59
+    }
+  },
+  "summary": {
+    "oscar salary": 1841.02,
+    "extra sources": 235.04,
+    "OSCAR NET IN": 2541.07,
+    "NET OUT": 2145.59,
+    "SHARED OUT TOTAL": 1366.17,
+    "OSCAR ACTUAL OUT": 1680.58,
+    "OSCAR OUT UNSHARED": 779.42,
+    "OSCAR OUT SHARED": 901.1600000000001,
+    "oscar shared earnings %": 0.4895,
+    "manu salary": 950,
+    "MANU OUT": 465.01,
+    "manu shared": 465.01,
+    "manu shared earnings %": 0.4895,
+    "overdraft": 0,
+    "=> budget": 2145.59,
+    "   - flex": 549.52,
+    "   - direct debits": 753.57,
+    "   - separate payments": 487.5,
+    "   - allowance": 355.0,
+    "=> extra expenses": 395.48,
+    "=> savings": 0.0,
+    "overdrawn": 0,
+    "available": 750.48,
+    "manu remainder": 484.99
+  }
+}

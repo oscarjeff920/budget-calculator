@@ -1,0 +1,212 @@
+{
+  "shared": {
+    "total": {
+      "oscar": 844.12,
+      "manu": 366.38,
+      "together": 1210.5
+    },
+    "flex": {
+      "total": {
+        "oscar": 16.04,
+        "manu": 6.96,
+        "together": 23.0
+      },
+      "payment split": {
+        "oscar": 16.04,
+        "manu": 6.96,
+        "percent": "0.85%",
+        "together": 23
+      }
+    },
+    "direct debits": {
+      "total": {
+        "oscar": 488.13,
+        "manu": 211.87,
+        "together": 700.0
+      },
+      "payment split": {
+        "oscar": 488.13,
+        "manu": 211.87,
+        "percent": "25.84%",
+        "together": 700
+      }
+    },
+    "separate debits": {
+      "total": {
+        "oscar": 339.95,
+        "manu": 147.55,
+        "together": 487.5
+      },
+      "payment split": {
+        "oscar": 339.95,
+        "manu": 147.55,
+        "percent": "17.99%",
+        "together": 487.5
+      }
+    }
+  },
+  "break_down": {
+    "oscar salary": 1889.21,
+    "manu salary": 820,
+    "combined salary": 2709.21,
+    "extra sources": {
+      "for manu's phone": {
+        "cost": 58.0
+      },
+      "for manu's tickets to dublin": {
+        "cost": 15.0
+      },
+      "left over": {
+        "cost": 374.55
+      },
+      "total": 447.55
+    },
+    "overdraft": 0,
+    "NET IN": 2703.1400000000003,
+    "NET OUT": 1878.87,
+    "budget": {
+      "left to pay": 1301.37,
+      "allowance": 355.0,
+      "flex": {
+        "manu's phone": {
+          "cost": 58
+        },
+        "h&m elisa": {
+          "cost": 23,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 16.04,
+            "manu": 6.96,
+            "percent": "0.85%",
+            "together": 23
+          }
+        },
+        "manu lingerie": {
+          "cost": 58
+        },
+        "pride": {
+          "cost": 19
+        },
+        "petrol": {
+          "cost": 18.8
+        },
+        "manu's dublin flights": {
+          "cost": 15
+        },
+        "total": 191.8
+      },
+      "direct debits": {
+        "ee": {
+          "cost": 10.0,
+          "date": 2
+        },
+        "google storage": {
+          "cost": 1.59,
+          "date": 5
+        },
+        "the gym": {
+          "cost": 24.99,
+          "date": 7
+        },
+        "spotify": {
+          "cost": 17.99,
+          "date": 29
+        },
+        "mum rent": {
+          "cost": 700,
+          "date": 29,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 488.13,
+            "manu": 211.87,
+            "percent": "25.84%",
+            "together": 700
+          }
+        },
+        "total": 754.57
+      },
+      "separate payments": {
+        "elisa nursery": {
+          "cost": 487.5,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 339.95,
+            "manu": 147.55,
+            "percent": "17.99%",
+            "together": 487.5
+          }
+        },
+        "boulder brighton x10 pass": {
+          "cost": 90
+        },
+        "total": 577.5
+      },
+      "total": 1878.87
+    },
+    "shared": {
+      "total": {
+        "oscar": 844.12,
+        "manu": 366.38,
+        "together": 1210.5
+      },
+      "flex": {
+        "total": {
+          "oscar": 16.04,
+          "manu": 6.96,
+          "together": 23.0
+        },
+        "payment split": {
+          "oscar": 16.04,
+          "manu": 6.96,
+          "percent": "0.85%",
+          "together": 23
+        }
+      },
+      "direct debits": {
+        "total": {
+          "oscar": 488.13,
+          "manu": 211.87,
+          "together": 700.0
+        },
+        "payment split": {
+          "oscar": 488.13,
+          "manu": 211.87,
+          "percent": "25.84%",
+          "together": 700
+        }
+      },
+      "separate debits": {
+        "total": {
+          "oscar": 339.95,
+          "manu": 147.55,
+          "together": 487.5
+        },
+        "payment split": {
+          "oscar": 339.95,
+          "manu": 147.55,
+          "percent": "17.99%",
+          "together": 487.5
+        }
+      }
+    }
+  },
+  "summary": {
+    "oscar salary": 1889.21,
+    "extra sources": 447.55,
+    "NET OUT": 1878.87,
+    "OSCAR ACTUAL OUT": 1512.4899999999998,
+    "OSCAR OUT UNSHARED": 668.3699999999998,
+    "oscar shared": 844.12,
+    "manu salary": 820,
+    "MANU OUT": 366.38,
+    "manu shared": 366.38,
+    "overdraft": 0,
+    "allowance": 355.0,
+    "=> budget": 1878.87,
+    "=> extra expenses": 424.27,
+    "=> savings": 400.0,
+    "overdrawn": 0,
+    "available": 779.27,
+    "manu remainder": 453.62
+  }
+}
