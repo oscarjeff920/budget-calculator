@@ -240,7 +240,8 @@ def calculate_budget(
     #     summary_totals["NET SHARED OUT"] = summary_totals["NET OSCAR SHARED OUT"] + summary_totals["NET MANU SHARED OUT"]
     #
     remainder = round(
-        summary_totals["NET IN"] - summary_totals["NET OUT"]["oscar"]["total"] + summary_totals["NET OUT"]["manu"]["total"],
+        summary_totals["NET IN"] - summary_totals["NET OUT"]["oscar"]["total"] + summary_totals["NET OUT"]["manu"][
+            "total"],
         2
     )
 
@@ -285,41 +286,41 @@ def calculate_budget(
 if __name__ == "__main__":
     # =========== Mock values =============
     mock_earnings = {
-        "oscar": 1841.02, #2057.87,#1950.20, #1841.02
-        "manu": 950, #1681.03#820 #10.5 * 8 * 3 * 4  # 10.5 * 6 * 2 * 4 + (10.5 * (3 + (2 + 2)))  # 672
+        # "oscar": 3571.96,  #55k
+        # "oscar": 2530.91,  #40k
+        # "oscar": 2253.84,  #35k
+        # "oscar": 2140.00,  #33k
+        "oscar": 1911.04,  # 28.8k - now
+
+        "manu": 1601,
+        # "manu": 689.92,  # Manu Maternity
     }
 
+    sandra_flights = 156.47
     mock_extra_sources = {
-        "for manu's phone": {"cost": 56.71},
-        "for manu's tickets to dublin": {"cost": 15.0},
-        "sandra flights to brazil": {"cost": 163.33},
+        "sandra flights to brazil": {"cost": sandra_flights},
+        "left over": {"cost": 13.84},
     }
 
-    mock_overdraft = 0
+    mock_overdraft = 0  # 38.53
 
     mock_flex = {
-        "christmas present": {"cost": 66.92},
-        "manu's phone": {"cost": 56.71},
+        # "mock_stuff": {"cost": 150}
 
-        "sandra flights to brazil": {"cost": 163.33},
-        "shared flights to brazil": {"cost": 319 - 163.33, "is_shared": True},
-
-        "h&m me": {"cost": 28},
-        "h&m elisa": {"cost": 23, "is_shared": True},
-
-        "protein": {"cost": 22.89},
-
-        "starfish and coffee": {"cost": 18},
-
-        "manu flights to dublin": {"cost": 15}
+        "sandra flights to brazil": {"cost": sandra_flights},
+        "shared flights to brazil": {"cost": 319 - sandra_flights, "is_shared": True},
+        "elisa's iPad": {"cost": 74},
     }
 
     mock_direct_debits = {
-        "mum rent": {"cost": 700, "date": 29, "is_shared": True},
+        "mum bills": {"cost": 810/2, "date": 29, "is_shared": True},
+        "mum rent": {"cost": 200/2, "date": 29, "is_shared": True},
         "ee": {"cost": 9.0, "date": 2},
         "google storage": {"cost": 1.59, "date": 5},
         "spotify": {"cost": 17.99, "date": 29},
-        "the gym": {"cost": 24.99, "date": 7},
+        "BJJ": {"cost": 40, "date": 1},
+        "The Union": {"cost": 8.33, "date": 1},
+        "the gym": {"cost": 25.99, "date": 7},
     }
 
     # over the longest months (31 days) we have 7 days of the week * 4
@@ -332,9 +333,16 @@ if __name__ == "__main__":
     mock_left_to_pay_value = calculate_left_to_pay_value(max_allowance, mock_direct_debits, mock_flex)
 
     mock_separate_payments = {
-        "elisa nursery": {"cost": 487.5, "is_shared": True},
-        # "rent": {"cost": 1000, "is_shared": True},
-        # "bills": {"cost": 100, "is_shared": True},
+        # "elisa nursery": {"cost": 839.5 - 158.62, "is_shared": True},
+        "elisa nursery": {"cost": 308.25 - 158.62, "is_shared": True},
+
+        # TODO: separate these from total budget
+        "manu's visa fee": {"cost": 250, "is_shared": True},
+        "ale": {"cost": (2.5 * 12) * 2 * (4/2), "is_shared": True},
+
+        # "elisa nursery": {"cost": 311.5 * 0.8, "is_shared": True},
+        # "rent": {"cost": 1250, "is_shared": True},
+        # "bills": {"cost": 200, "is_shared": True},
         # "food": {"cost": 600, "is_shared": True},
         # "council tax": {"cost": 124, "is_shared": True},
         # "wifi": {"cost": 30, "is_shared": True},
@@ -345,7 +353,7 @@ if __name__ == "__main__":
         overdraft=mock_overdraft, init_flex=mock_flex,
         init_direct_debits=mock_direct_debits,
         init_separate_payments=mock_separate_payments
-                            )
+    )
     # calculate_budget(
     #     True, calculation_type="budget",
     #     earnings_mock=mock_earnings, extra_sources_mock=mock_extra_sources, overdraft_mock=mock_overdraft,

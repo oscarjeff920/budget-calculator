@@ -339,7 +339,7 @@ def copy_over_items(summary1, summary2, item_type):
 def rearrange_date(date):
     division = date.split("-")
 
-    return f"{division[-1]}-{division[-2]}-{division[-3]}"
+    return f"{division[-1]}-{division[-2]}-{division[-3]}", int(division[-2])
 
 
 def calculate_left_to_pay_value(allowance, direct_debits, flex):
@@ -358,11 +358,28 @@ def calculate_left_to_pay_value(allowance, direct_debits, flex):
 
 def save_budget(test, calculation_type, **kwargs):
     today = str(dt.datetime.now())
-    date = rearrange_date(today[:today.find(" ")])
+    date, month_int = rearrange_date(today[:today.find(" ")])
 
     test_tag = '' if not test else '-Test'
 
-    filename = f"{date}:{calculation_type.lower().capitalize()}{test_tag}"
+    months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ]
+
+    # If the budget is calculated before the 11th then its most likely re-calculating for the current month
+    month_name = months[month_int -1] if int(date.split("-")[0]) < 11 else months[month_int]
+
+    filename = f"{month_name}:{date}:{calculation_type.lower().capitalize()}{test_tag}"
 
     # for budget_name, budget in kwargs.items():
     with open(f"{filename}.json", "w") as budget_file:
@@ -553,7 +570,8 @@ def split_remainder(remainder, allowance):
 
         available = round(allowance + extra_expenses, 2)
 
-    return dict(savings = savings, extra_expenses = extra_expenses, overdrawn = overdrawn, available = available)
+    return dict(savings=savings, extra_expenses=extra_expenses, overdrawn=overdrawn, available=available)
+
 
 def static_calculate_budget(
         earnings, extra_sources, overdraft,
@@ -632,11 +650,36 @@ def static_calculate_budget(
         "OSCAR ACTUAL OUT": round(oscar_out_actual, 2),
         "OSCAR OUT UNSHARED": round(oscar_out_actual - shared['total']['oscar'], 2),
         "OSCAR OUT SHARED": shared['total']['oscar'],
-        "oscar shared earnings %": round(shared['total']['oscar']/earnings['oscar'], 4),
+        "oscar shared earnings %": round(shared['total']['oscar'] / earnings['oscar'], 4),
         "manu salary": earnings['manu'],
         "MANU OUT": shared['total']['manu'],
         "manu shared": shared['total']['manu'],
-        "manu shared earnings %": round(shared['total']['manu']/earnings['manu'], 4),
+        "manu shared earnings %": round(shared['total']['manu'] / earnings['manu'], 4),
+        "overdraft": overdraft,
+        "=> budget": budget['total'],
+        "   - flex": flex['total'],
+        "   - direct debits": direct_debits['total'],
+        "   - separate payments": separate_payments['total'],
+        "   - allowance": allowance,
+        "=> extra expenses": result['extra_expenses'],
+        "=> savings": result['savings'],
+        "overdrawn": result['overdrawn'],
+        "available": result['available'],
+        "manu remainder": earnings['manu'] - shared['total']['manu']
+    }
+
+    summary_check = {
+        "OSCAR NET IN": "oscar salary + extra sources + manu's shared total",
+        "NET OUT": "flex + direct debit + separate_payments + overdraft",
+        "SHARED OUT TOTAL": "oscar shared out + manu shared out",
+        "OSCAR ACTUAL OUT": "oscar personal (flex, direct debit) + oscar shared out",
+        "OSCAR OUT UNSHARED": "oscar total - oscar shared",
+        "OSCAR OUT SHARED": "oscar shared",
+        "oscar shared earnings %": "percent of oscars earnings spent on sh",
+        "manu salary": earnings['manu'],
+        "MANU OUT": shared['total']['manu'],
+        "manu shared": shared['total']['manu'],
+        "manu shared earnings %": round(shared['total']['manu'] / earnings['manu'], 4),
         "overdraft": overdraft,
         "=> budget": budget['total'],
         "   - flex": flex['total'],
