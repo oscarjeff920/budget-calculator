@@ -1,0 +1,206 @@
+{
+  "shared": {
+    "total": {
+      "oscar": 1163.38,
+      "manu": 606.64,
+      "together": 1770.02
+    },
+    "flex": {
+      "total": {
+        "payments": [
+          "shared flights to brazil",
+          "h&m elisa"
+        ],
+        "oscar": 119.31,
+        "manu": 62.21,
+        "together": 181.52
+      },
+      "shared flights to brazil": {
+        "oscar": 105.81,
+        "manu": 55.17,
+        "percent": "5.75%",
+        "together": 160.98
+      },
+      "h&m elisa": {
+        "oscar": 13.5,
+        "manu": 7.04,
+        "percent": "0.73%",
+        "together": 20.54
+      }
+    },
+    "direct debits": {
+      "total": {
+        "payments": [
+          "mum rent"
+        ],
+        "oscar": 460.09,
+        "manu": 239.91,
+        "together": 700.0
+      },
+      "mum rent": {
+        "oscar": 460.09,
+        "manu": 239.91,
+        "percent": "24.99%",
+        "together": 700
+      }
+    },
+    "separate debits": {
+      "total": {
+        "payments": [
+          "elisa nursery"
+        ],
+        "oscar": 583.98,
+        "manu": 304.52,
+        "together": 888.5
+      },
+      "elisa nursery": {
+        "oscar": 583.98,
+        "manu": 304.52,
+        "percent": "31.72%",
+        "together": 888.5
+      }
+    }
+  },
+  "break_down": {
+    "oscar salary": 1841.02,
+    "manu salary": 960,
+    "combined salary": 2801.02,
+    "extra sources": {
+      "for manu's tickets to dublin": {
+        "cost": 14.13
+      },
+      "sandra flights to brazil": {
+        "cost": 158.02
+      },
+      "total": 172.15
+    },
+    "overdraft": 38.53,
+    "NET IN": 2619.81,
+    "NET OUT": 2418.0400000000004,
+    "NET OUT SHARED": 1770.02,
+    "budget": {
+      "left to pay": 1491.01,
+      "allowance": 355.0,
+      "flex": {
+        "sandra flights to brazil": {
+          "cost": 158.02
+        },
+        "shared flights to brazil": {
+          "cost": 160.98,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 105.81,
+            "manu": 55.17,
+            "percent": "5.75%",
+            "together": 160.98
+          }
+        },
+        "h&m me": {
+          "cost": 27.67
+        },
+        "h&m elisa": {
+          "cost": 20.54,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 13.5,
+            "manu": 7.04,
+            "percent": "0.73%",
+            "together": 20.54
+          }
+        },
+        "starfish and coffee": {
+          "cost": 1.1
+        },
+        "manu flights to dublin": {
+          "cost": 14.13
+        },
+        "total": 382.44
+      },
+      "direct debits": {
+        "ee": {
+          "cost": 9.0,
+          "date": 2
+        },
+        "google storage": {
+          "cost": 1.59,
+          "date": 5
+        },
+        "the gym": {
+          "cost": 24.99,
+          "date": 7
+        },
+        "mum rent": {
+          "cost": 700,
+          "date": 29,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 460.09,
+            "manu": 239.91,
+            "percent": "24.99%",
+            "together": 700
+          }
+        },
+        "spotify": {
+          "cost": 17.99,
+          "date": 29
+        },
+        "total": 753.57
+      },
+      "separate payments": {
+        "elisa nursery": {
+          "cost": 888.5,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 583.98,
+            "manu": 304.52,
+            "percent": "31.72%",
+            "together": 888.5
+          }
+        },
+        "total": 888.5
+      },
+      "total": 2379.51
+    }
+  },
+  "summary": {
+    "oscar salary": 1841.02,
+    "extra sources": 172.15,
+    "OSCAR NET IN": 2619.81,
+    "NET OUT": 2418.0400000000004,
+    "SHARED OUT TOTAL": 1770.02,
+    "OSCAR ACTUAL OUT": 1772.87,
+    "OSCAR OUT UNSHARED": 609.49,
+    "OSCAR OUT SHARED": 1163.38,
+    "oscar shared earnings %": 0.6319,
+    "manu salary": 960,
+    "MANU OUT": 606.64,
+    "manu shared": 606.64,
+    "manu shared earnings %": 0.6319,
+    "overdraft": 38.53,
+    "=> budget": 2379.51,
+    "   - flex": 382.44,
+    "   - direct debits": 753.57,
+    "   - separate payments": 888.5,
+    "   - allowance": 355.0,
+    "=> extra expenses": 201.77,
+    "=> savings": 0.0,
+    "overdrawn": 0,
+    "available": 556.77,
+    "manu remainder": 353.36
+  },
+  "review" : {
+    "self groceries": 165.34,
+    "external top-ups" : {
+      "flex bailout": {
+        "asda": 63.28,
+        "bowling": 39.24
+      },
+      "withdrawn from savings": 100
+    },
+    "left over": 17.53,
+    "available": 556.77,
+    "required available" : 741.76,
+    "required extra expenses": 386.76,
+    "difference given extra expenses": 184.99
+  }
+}

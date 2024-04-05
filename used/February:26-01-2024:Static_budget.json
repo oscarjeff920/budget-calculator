@@ -1,0 +1,202 @@
+{
+  "shared": {
+    "total": {
+      "oscar": 1145.1999999999998,
+      "manu": 605.24,
+      "together": 1750.44
+    },
+    "flex": {
+      "total": {
+        "payments": [
+          "shared flights to brazil"
+        ],
+        "oscar": 105.95,
+        "manu": 55.99,
+        "together": 161.94
+      },
+      "shared flights to brazil": {
+        "oscar": 105.95,
+        "manu": 55.99,
+        "percent": "5.54%",
+        "together": 161.94
+      }
+    },
+    "direct debits": {
+      "total": {
+        "payments": [
+          "mum rent"
+        ],
+        "oscar": 457.96,
+        "manu": 242.04,
+        "together": 700.0
+      },
+      "mum rent": {
+        "oscar": 457.96,
+        "manu": 242.04,
+        "percent": "23.96%",
+        "together": 700
+      }
+    },
+    "separate debits": {
+      "total": {
+        "payments": [
+          "elisa nursery"
+        ],
+        "oscar": 581.29,
+        "manu": 307.21,
+        "together": 888.5
+      },
+      "elisa nursery": {
+        "oscar": 581.29,
+        "manu": 307.21,
+        "percent": "30.42%",
+        "together": 888.5
+      }
+    }
+  },
+  "break_down": {
+    "oscar salary": 1911.04,
+    "manu salary": 1010,
+    "combined salary": 2921.04,
+    "extra sources": {
+      "sandra flights to brazil": {
+        "cost": 157.06
+      },
+      "left over": {
+        "cost": 17.53
+      },
+      "total": 174.59
+    },
+    "overdraft": 0,
+    "NET IN": 2690.87,
+    "NET OUT": 2419.59,
+    "NET OUT SHARED": 1750.44,
+    "budget": {
+      "left to pay": 1531.09,
+      "allowance": 355.0,
+      "flex": {
+        "sandra flights to brazil": {
+          "cost": 157.06
+        },
+        "shared flights to brazil": {
+          "cost": 161.94,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 105.95,
+            "manu": 55.99,
+            "percent": "5.54%",
+            "together": 161.94
+          }
+        },
+        "asda": {
+          "cost": 63.28
+        },
+        "bowling": {
+          "cost": 39.24
+        },
+        "total": 421.52
+      },
+      "direct debits": {
+        "ee": {
+          "cost": 9.0,
+          "date": 2
+        },
+        "google storage": {
+          "cost": 1.59,
+          "date": 5
+        },
+        "the gym": {
+          "cost": 25.99,
+          "date": 7
+        },
+        "mum rent": {
+          "cost": 700,
+          "date": 29,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 457.96,
+            "manu": 242.04,
+            "percent": "23.96%",
+            "together": 700
+          }
+        },
+        "spotify": {
+          "cost": 17.99,
+          "date": 29
+        },
+        "total": 754.57
+      },
+      "separate payments": {
+        "elisa nursery": {
+          "cost": 888.5,
+          "is_shared": true,
+          "payment split": {
+            "oscar": 581.29,
+            "manu": 307.21,
+            "percent": "30.42%",
+            "together": 888.5
+          }
+        },
+        "total": 888.5
+      },
+      "total": 2419.59
+    }
+  },
+  "summary": {
+    "oscar salary": 1911.04,
+    "extra sources": 174.59,
+    "OSCAR NET IN": 2690.87,
+    "NET OUT": 2419.59,
+    "SHARED OUT TOTAL": 1750.44,
+    "OSCAR ACTUAL OUT": 1814.35,
+    "OSCAR OUT UNSHARED": 669.15,
+    "OSCAR OUT SHARED": 1145.1999999999998,
+    "oscar shared earnings %": 0.5993,
+    "manu salary": 1010,
+    "MANU OUT": 605.24,
+    "manu shared": 605.24,
+    "manu shared earnings %": 0.5992,
+    "overdraft": 0,
+    "=> budget": 2419.59,
+    "   - flex": 421.52,
+    "   - direct debits": 754.57,
+    "   - separate payments": 888.5,
+    "   - allowance": 355.0,
+    "=> extra expenses": 271.28,
+    "=> savings": 0.0,
+    "overdrawn": 0,
+    "available": 626.28,
+    "manu remainder": 404.76
+  },
+  "estimated required injection": 115.48,
+  "review" : {
+    "self groceries": 196,
+    "external top-ups": {
+      "PLT refund": 82.8,
+      "flex bailout": {
+        "PLT valentines (I think)": 49.50,
+        "elisa's iPad": 220.65
+      },
+
+      "total": 352.95
+    },
+    "left over": 83.11,
+    "available this month": 626.28,
+    "required available":
+  },
+  "review" : {
+    "self groceries": 165.34,
+    "external top-ups" : {
+      "flex bailout": {
+        "asda": 63.28,
+        "bowling": 39.24
+      },
+      "withdrawn from savings": 100
+    },
+    "left over": 17.53,
+    "available": 556.77,
+    "required available" : 741.76,
+    "required extra expenses": 386.76,
+    "difference given extra expenses": 184.99
+  }
+}
