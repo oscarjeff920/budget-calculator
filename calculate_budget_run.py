@@ -286,38 +286,34 @@ def calculate_budget(
 if __name__ == "__main__":
     # =========== Mock values =============
     mock_earnings = {
-        # "oscar": 3571.96,  #55k
-        # "oscar": 2530.91,  #40k
-        # "oscar": 2253.84,  #35k
-        # "oscar": 2140.00,  #33k
-        "oscar": 1911.04,  # 28.8k - now
+        "oscar": 1935.75,  # 28.8k - now
 
-        "manu": 1601,
+        "manu": 1735.2,
+        # "manu": 1601,
         # "manu": 689.92,  # Manu Maternity
     }
 
-    sandra_flights = 156.47
+    sandra_flights = 154.11
     mock_extra_sources = {
         "sandra flights to brazil": {"cost": sandra_flights},
         "left over": {"cost": 13.84},
     }
 
-    mock_overdraft = 0  # 38.53
+    mock_overdraft = 500.68
 
     mock_flex = {
         # "mock_stuff": {"cost": 150}
 
-        "sandra flights to brazil": {"cost": sandra_flights},
-        "shared flights to brazil": {"cost": 319 - sandra_flights, "is_shared": True},
         "elisa's iPad": {"cost": 74},
+        "rental wedding suit": {"cost": 19},
     }
 
     mock_direct_debits = {
-        "mum bills": {"cost": 810/2, "date": 29, "is_shared": True},
-        "mum rent": {"cost": 200/2, "date": 29, "is_shared": True},
+        "mum bills": {"cost": 810, "date": 29, "is_shared": True},
+        "mum rent": {"cost": 200, "date": 29, "is_shared": True},
         "ee": {"cost": 9.0, "date": 2},
         "google storage": {"cost": 1.59, "date": 5},
-        "spotify": {"cost": 17.99, "date": 29},
+        "spotify": {"cost": 19.99, "date": 29},
         "BJJ": {"cost": 40, "date": 1},
         "The Union": {"cost": 8.33, "date": 1},
         "the gym": {"cost": 25.99, "date": 7},
@@ -338,7 +334,7 @@ if __name__ == "__main__":
 
         # TODO: separate these from total budget
         "manu's visa fee": {"cost": 250, "is_shared": True},
-        "ale": {"cost": (2.5 * 12) * 2 * (4/2), "is_shared": True},
+        "ale": {"cost": (2.5 * 12), "is_shared": True},
 
         # "elisa nursery": {"cost": 311.5 * 0.8, "is_shared": True},
         # "rent": {"cost": 1250, "is_shared": True},
