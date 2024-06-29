@@ -367,6 +367,7 @@ def save_budget(test, calculation_type, **kwargs):
         'February',
         'March',
         'April',
+        'May',
         'June',
         'July',
         'August',
@@ -377,7 +378,7 @@ def save_budget(test, calculation_type, **kwargs):
     ]
 
     # If the budget is calculated before the 11th then its most likely re-calculating for the current month
-    month_name = months[month_int -1] if int(date.split("-")[0]) < 11 else months[month_int]
+    month_name = months[month_int - 1] if int(date.split("-")[0]) < 20 else months[month_int]
 
     filename = f"{month_name}:{date}:{calculation_type.lower().capitalize()}{test_tag}"
 
@@ -482,6 +483,8 @@ def order_dict_by_payment_date(parent_dict):
 
 def update_dict_with_shared_split(earnings, parent_dict):
     for _dict in parent_dict.values():
+        if _dict.get("discount", False):
+            _dict['cost'] -= _dict['discount']
         if _dict.get("is_shared", False):
             _dict['payment split'] = calculate_shared_split(_dict['cost'], earnings)
 
@@ -539,9 +542,10 @@ def tally_shared_split(flex, direct_debits, separate_payments):
     separate_payments_split = extract_shared_split(separate_payments)
     shared['separate debits'] = separate_payments_split
 
-    shared['total']['oscar'] = sum_totals(flex_split, direct_debits_split, separate_payments_split, 'oscar')
-    shared['total']['manu'] = sum_totals(flex_split, direct_debits_split, separate_payments_split, 'manu')
-    shared['total']['together'] = sum_totals(flex_split, direct_debits_split, separate_payments_split, 'together')
+    shared['total']['oscar'] = round(sum_totals(flex_split, direct_debits_split, separate_payments_split, 'oscar'), 2)
+    shared['total']['manu'] = round(sum_totals(flex_split, direct_debits_split, separate_payments_split, 'manu'), 2)
+    shared['total']['together'] = round(
+        sum_totals(flex_split, direct_debits_split, separate_payments_split, 'together'), 2)
 
     return shared
 
@@ -596,8 +600,9 @@ def static_calculate_budget(
         "allowance": allowance,
         "flex": flex,
         "direct debits": direct_debits,
-        "separate payments": separate_payments,
-        "total": left_to_pay_value + separate_payments['total']
+        # "separate payments": separate_payments,
+        # "total": left_to_pay_value + separate_payments['total']
+        "total": left_to_pay_value
     }
 
     # Summary
@@ -611,9 +616,10 @@ def static_calculate_budget(
         "NET OUT": left_to_pay_value + separate_payments['total'] + overdraft,
         "NET OUT SHARED": shared['total']['together'],
         "budget": budget,
+        "separate payments": separate_payments
     }
 
-    oscar_out_actual = budget['total'] - shared['total']['manu']
+    oscar_out_actual = budget['total'] + separate_payments['total'] - shared['total']['manu']
 
     remainder = round(break_down['NET IN'] - break_down['NET OUT'], 2)
 
@@ -621,7 +627,7 @@ def static_calculate_budget(
     key = {
         "oscar salary": "£ earned by oscar this month",
         "extra sources": "Extra £ brought in this month",
-        "OSCAR NET IN": "oscar salary + extra sources + MANU OUT",
+        "OSCAR NET IN": "oscar salary + extra sources + MANU OUT(shared)",
         "NET OUT": "left_to_pay_value + separate_payments['total'] + overdraft",
         "OSCAR ACTUAL OUT": "NET OUT - MANU OUT",
         "OSCAR OUT UNSHARED": "NET OUT - total shared",
@@ -635,6 +641,7 @@ def static_calculate_budget(
         "   - direct debits": direct_debits['total'],
         "   - separate payments": separate_payments['total'],
         "   - allowance": allowance,
+
         "=> extra expenses": result['extra_expenses'],
         "=> savings": result['savings'],
         "overdrawn": result['overdrawn'],
@@ -659,14 +666,18 @@ def static_calculate_budget(
         "=> budget": budget['total'],
         "   - flex": flex['total'],
         "   - direct debits": direct_debits['total'],
-        "   - separate payments": separate_payments['total'],
         "   - allowance": allowance,
-        "=> extra expenses": result['extra_expenses'],
-        "=> savings": result['savings'],
-        "overdrawn": result['overdrawn'],
-        "available": result['available'],
-        "manu remainder": earnings['manu'] - shared['total']['manu']
+        "total separate payments": separate_payments['total'],
     }
+    for index, value in separate_payments.items():
+        if index != 'total':
+            summary[f'=> {index}'] = value['cost']
+
+    summary["=> extra expenses"] = result['extra_expenses']
+    summary["=> savings"] = result['savings']
+    summary["overdrawn"] = result['overdrawn']
+    summary["available"] = result['available']
+    summary["manu remainder"] = earnings['manu'] - shared['total']['manu']
 
     summary_check = {
         "OSCAR NET IN": "oscar salary + extra sources + manu's shared total",
@@ -693,4 +704,25 @@ def static_calculate_budget(
         "manu remainder": earnings['manu'] - shared['total']['manu']
     }
 
-    save_budget(False, 'static_budget', shared=shared, break_down=break_down, summary=summary)
+    into_pots = {
+        "manu's shared": -shared['total']['manu'],
+        "budget": budget['total'],
+        "extra expenses": result['extra_expenses'],
+    }
+
+    for index, value in separate_payments.items():
+        if index != 'total':
+            if value.get("discount", False):
+                into_pots[index] = {"total in pot": value['cost'] + value['discount'], "real cost": value['cost'],
+                                    "discount": value['discount']}
+            else:
+                into_pots[index] = value['cost']
+
+    into_pots['savings'] = result['savings']
+
+    save_budget(False, 'static_budget',
+                summary=summary,
+                shared=shared,
+                break_down=break_down,
+                into_pots=into_pots
+                )
